@@ -1,15 +1,5 @@
 import { z } from "zod";
 
-export type TDoctor = {
-  name: string;
-  email: string;
-  phone: string;
-  password: string;
-  specialization: string;
-  hospitalName: string;
-  hospitalFloor: string;
-};
-
 const registerDoctorValidationSchema = z.object({
   body: z.object({
     name: z.string({ required_error: "Name is required" }).min(3).max(50),

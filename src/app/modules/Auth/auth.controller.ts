@@ -14,6 +14,17 @@ const registerDoctor = catchAsync(async (req, res) => {
   });
 });
 
+const registerPatient = catchAsync(async (req, res) => {
+  const result = await authService.registerPatient(req.body);
+  sendResponse(res, {
+    statusCode: status.CREATED,
+    success: true,
+    message: "Patient registered successfully",
+    data: result,
+  });
+});
+
 export const authControllers = {
   registerDoctor,
+  registerPatient,
 };
