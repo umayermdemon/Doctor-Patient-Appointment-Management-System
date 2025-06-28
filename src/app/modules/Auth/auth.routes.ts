@@ -17,4 +17,6 @@ router.post(
   authControllers.registerPatient
 );
 
+router.post("/login", authControllers.login);
+
 export const authRoutes = router;

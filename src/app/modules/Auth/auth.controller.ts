@@ -24,7 +24,18 @@ const registerPatient = catchAsync(async (req, res) => {
   });
 });
 
+const login = catchAsync(async (req, res) => {
+  const result = await authService.login(req.body);
+  sendResponse(res, {
+    statusCode: status.OK,
+    success: true,
+    message: "Login successful",
+    data: result,
+  });
+});
+
 export const authControllers = {
   registerDoctor,
   registerPatient,
+  login,
 };

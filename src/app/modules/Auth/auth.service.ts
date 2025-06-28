@@ -5,6 +5,10 @@ import { Doctor } from "../Doctor/doctor.model";
 import bcrypt from "bcrypt";
 import { TPatient } from "../Patient/patient.interface";
 import { Patient } from "../Patient/patient.model";
+import { TLogin } from "./auth.interface";
+import jwt, { Secret } from "jsonwebtoken";
+import { createToken } from "./auth.utils";
+import config from "../../config";
 
 const registerDoctor = async (payload: TDoctor) => {
   const doctor = await Doctor.findOne({ email: payload.email });
@@ -34,7 +38,56 @@ const registerPatient = async (payload: TPatient) => {
   return result;
 };
 
+const login = async (payload: TLogin) => {
+  const doctor = await Doctor.findOne({ email: payload.email });
+
+  if (doctor) {
+    const isPasswordMatch = await bcrypt.compare(
+      payload.password,
+      doctor.password!
+    );
+    if (!isPasswordMatch) {
+      throw new AppError(status.UNAUTHORIZED, "Invalid password");
+    }
+    const jwtPayload = {
+      id: doctor._id,
+      name: doctor.name,
+      email: doctor.email,
+    };
+    const accessToken = createToken(
+      jwtPayload,
+      config.jwt.accessTokenSecret as Secret,
+      config.jwt.accessTokenExpiresIn as string
+    );
+    return { accessToken };
+  } else {
+    const patient = await Patient.findOne({ email: payload.email });
+    if (patient) {
+      const isPasswordMatch = await bcrypt.compare(
+        payload.password,
+        patient.password!
+      );
+      if (!isPasswordMatch) {
+        throw new AppError(status.UNAUTHORIZED, "Invalid password");
+      }
+      const jwtPayload = {
+        id: patient._id,
+        name: patient.name,
+        email: patient.email,
+      };
+      const accessToken = createToken(
+        jwtPayload,
+        config.jwt.accessTokenSecret as Secret,
+        config.jwt.accessTokenExpiresIn as string
+      );
+      return { accessToken };
+    }
+  }
+  throw new AppError(status.UNAUTHORIZED, "Invalid credentials");
+};
+
 export const authService = {
   registerDoctor,
   registerPatient,
+  login,
 };
