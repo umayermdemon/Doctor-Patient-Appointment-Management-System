@@ -17,4 +17,6 @@ router.patch(
   doctorControllers.updateDoctorService
 );
 
+router.delete("/services/:id", auth("doctor"), doctorControllers.deleteService);
+
 export const doctorRoutes = router;

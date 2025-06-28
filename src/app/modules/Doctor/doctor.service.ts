@@ -26,7 +26,17 @@ const updateDoctorService = async (
   return result;
 };
 
+const deleteService = async (id: string) => {
+  const doctorService = await DoctorService.findById(id);
+  if (!doctorService) {
+    throw new AppError(status.BAD_REQUEST, "Doctor Service does not exist");
+  }
+  await DoctorService.findOneAndDelete({ _id: id });
+  return null;
+};
+
 export const doctorServices = {
   doctorService,
   updateDoctorService,
+  deleteService,
 };
