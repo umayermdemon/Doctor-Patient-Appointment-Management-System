@@ -1,4 +1,3 @@
-// Fields: name, email, phone, password, specialization, hospitalName, hospitalFloor
 export type TDoctor = {
   name: string;
   email: string;
