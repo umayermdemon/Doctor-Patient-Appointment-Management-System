@@ -21,4 +21,19 @@ const registerDoctorValidationSchema = z.object({
   }),
 });
 
-export const doctorValidationSchema = { registerDoctorValidationSchema };
+const doctorServiceValidationSchema = z.object({
+  body: z.object({
+    title: z.string({ required_error: "Title is required" }).min(3),
+    description: z.string({ required_error: "Description is required" }).min(3),
+    price: z.number({ required_error: "Price is required" }).min(1),
+    duration: z
+      .number({ required_error: "Duration is required" })
+      .min(1)
+      .max(100),
+  }),
+});
+
+export const doctorValidationSchema = {
+  registerDoctorValidationSchema,
+  doctorServiceValidationSchema,
+};

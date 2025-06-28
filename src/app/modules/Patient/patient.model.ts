@@ -28,6 +28,10 @@ const patientSchema = new Schema<TPatient>({
     enum: ["male", "female", "other"],
     required: true,
   },
+  role: {
+    type: String,
+    default: "patient",
+  },
 });
 
 export const Patient = model<TPatient>("Patient", patientSchema);

@@ -6,4 +6,12 @@ export type TDoctor = {
   specialization: string;
   hospitalName: string;
   hospitalFloor: string;
+  role: "doctor";
+};
+
+export type TDoctorService = {
+  title: string;
+  description: string;
+  price: number;
+  duration: number;
 };

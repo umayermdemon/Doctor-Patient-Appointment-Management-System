@@ -1,8 +1,8 @@
 import { Router } from "express";
 import { authControllers } from "./auth.controller";
 import validateRequest from "../../middlewares/validateRequest";
-import { doctorValidationSchema } from "../Doctor/doctor.validate";
-import { patientValidationSchema } from "../Patient/patient.validate";
+import { doctorValidationSchema } from "../Doctor/doctor.validation";
+import { patientValidationSchema } from "../Patient/patient.validation";
 
 const router = Router();
 

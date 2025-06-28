@@ -5,4 +5,5 @@ export type TPatient = {
   password: string;
   age: number;
   gender: "male" | "female" | "other";
+  role: "patient";
 };

@@ -1,5 +1,5 @@
 import { model, Schema } from "mongoose";
-import { TDoctor } from "./doctor.interface";
+import { TDoctor, TDoctorService } from "./doctor.interface";
 
 const doctorSchema = new Schema<TDoctor>({
   name: {
@@ -31,6 +31,34 @@ const doctorSchema = new Schema<TDoctor>({
     type: String,
     required: true,
   },
+  role: {
+    type: String,
+    default: "doctor",
+  },
 });
 
 export const Doctor = model<TDoctor>("Doctor", doctorSchema);
+
+const doctorServiceSchema = new Schema<TDoctorService>({
+  title: {
+    type: String,
+    required: true,
+  },
+  description: {
+    type: String,
+    required: true,
+  },
+  price: {
+    type: Number,
+    required: true,
+  },
+  duration: {
+    type: Number,
+    required: true,
+  },
+});
+
+export const DoctorService = model<TDoctorService>(
+  "DoctorService",
+  doctorServiceSchema
+);

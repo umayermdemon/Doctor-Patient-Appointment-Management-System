@@ -50,9 +50,9 @@ const login = async (payload: TLogin) => {
       throw new AppError(status.UNAUTHORIZED, "Invalid password");
     }
     const jwtPayload = {
-      id: doctor._id,
       name: doctor.name,
       email: doctor.email,
+      role: doctor.role,
     };
     const accessToken = createToken(
       jwtPayload,
@@ -71,9 +71,9 @@ const login = async (payload: TLogin) => {
         throw new AppError(status.UNAUTHORIZED, "Invalid password");
       }
       const jwtPayload = {
-        id: patient._id,
         name: patient.name,
         email: patient.email,
+        role: patient.role,
       };
       const accessToken = createToken(
         jwtPayload,

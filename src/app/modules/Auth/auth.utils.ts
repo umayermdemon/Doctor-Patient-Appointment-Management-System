@@ -4,9 +4,9 @@ import jwt, { Secret, SignOptions } from "jsonwebtoken";
 
 export const createToken = (
   jwtPayload: {
-    id: Types.ObjectId;
     name: string;
     email: string;
+    role: string;
   },
   secret: Secret,
   expiresIn: string
