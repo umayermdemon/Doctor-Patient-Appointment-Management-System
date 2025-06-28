@@ -12,6 +12,21 @@ const doctorService = async (payload: TDoctorService) => {
   return result;
 };
 
+const updateDoctorService = async (
+  payload: Partial<TDoctorService>,
+  id: string
+) => {
+  const doctorService = await DoctorService.findById(id);
+  if (!doctorService) {
+    throw new AppError(status.BAD_REQUEST, "Doctor Service does not exist");
+  }
+  const result = await DoctorService.findOneAndUpdate({ _id: id }, payload, {
+    new: true,
+  });
+  return result;
+};
+
 export const doctorServices = {
   doctorService,
+  updateDoctorService,
 };

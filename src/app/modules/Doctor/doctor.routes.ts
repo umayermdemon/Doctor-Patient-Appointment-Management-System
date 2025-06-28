@@ -11,5 +11,10 @@ router.post(
   validateRequest(doctorValidationSchema.doctorServiceValidationSchema),
   doctorControllers.doctorService
 );
+router.patch(
+  "/services/:id",
+  auth("doctor"),
+  doctorControllers.updateDoctorService
+);
 
 export const doctorRoutes = router;
