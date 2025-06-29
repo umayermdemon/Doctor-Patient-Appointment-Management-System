@@ -70,12 +70,6 @@ const createAvailability = async (
   return result;
 };
 
-//  Appointment Management (Doctor Side)
-// View all appointment requests:
-// GET /doctor/appointments?status=pending
-// Appointment status:
-// pending, accepted, cancelled, completed
-
 // View all appointments:
 const getMyAppointments = async (email: string, query: any) => {
   const queryFilter = query.status ? { status: query.status } : {};
@@ -130,9 +124,7 @@ const getMyAppointments = async (email: string, query: any) => {
   return result;
 };
 
-// Accept or cancel an appointment:
-// PATCH /doctor/appointments/:id/status
-
+// accept or cancel an appointment
 const acceptOrCancelAppointment = async (id: string, newStatus: string) => {
   const appointment = await Appointment.findById(id);
   if (!appointment) {
