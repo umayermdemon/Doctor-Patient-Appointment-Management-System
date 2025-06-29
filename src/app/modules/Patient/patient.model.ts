@@ -1,6 +1,7 @@
 import { model, Schema } from "mongoose";
-import { TPatient } from "./patient.interface";
+import { TAppointment, TPatient } from "./patient.interface";
 
+// patient schema
 const patientSchema = new Schema<TPatient>({
   name: {
     type: String,
@@ -35,3 +36,37 @@ const patientSchema = new Schema<TPatient>({
 });
 
 export const Patient = model<TPatient>("Patient", patientSchema);
+
+// appointment schema
+const appointmentSchema = new Schema<TAppointment>({
+  doctorId: {
+    type: Schema.Types.ObjectId,
+    ref: "Doctor",
+  },
+  serviceId: {
+    type: Schema.Types.ObjectId,
+    ref: "DoctorService",
+  },
+  patientId: {
+    type: Schema.Types.ObjectId,
+    ref: "Patient",
+  },
+  selectedDate: {
+    type: String,
+    required: true,
+  },
+  timeSlot: {
+    type: String,
+    required: true,
+  },
+  status: {
+    type: String,
+    enum: ["pending", "accepted", "cancelled", "completed"],
+    default: "pending",
+  },
+});
+
+export const Appointment = model<TAppointment>(
+  "Appointment",
+  appointmentSchema
+);

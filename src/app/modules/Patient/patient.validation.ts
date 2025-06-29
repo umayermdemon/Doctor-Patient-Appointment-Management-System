@@ -13,4 +13,15 @@ const registerPatientValidationSchema = z.object({
   }),
 });
 
-export const patientValidationSchema = { registerPatientValidationSchema };
+const createAppointmentValidationSchema = z.object({
+  body: z.object({
+    serviceId: z.string({ required_error: "Service Id is required" }),
+    selectedDate: z.string({ required_error: "Selected Date is required" }),
+    timeSlot: z.string({ required_error: "Time Slot is required" }),
+  }),
+});
+
+export const patientValidationSchema = {
+  registerPatientValidationSchema,
+  createAppointmentValidationSchema,
+};

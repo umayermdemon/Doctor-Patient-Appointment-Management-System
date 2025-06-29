@@ -27,7 +27,33 @@ const getDoctorProfile = catchAsync(async (req, res) => {
   });
 });
 
+// create appointment
+const createAppointment = catchAsync(async (req, res) => {
+  const { email } = req.user;
+  const result = await patientServices.createAppointment(req.body, email);
+  sendResponse(res, {
+    statusCode: status.CREATED,
+    success: true,
+    message: "Appointment created successfully",
+    data: result,
+  });
+});
+
+// get my appointments
+const getMyAppointments = catchAsync(async (req, res) => {
+  const { email } = req.user;
+  const result = await patientServices.getMyAppointments(email);
+  sendResponse(res, {
+    statusCode: status.OK,
+    success: true,
+    message: "My appointments retrieved successfully",
+    data: result,
+  });
+});
+
 export const patientControllers = {
   getAllDoctors,
   getDoctorProfile,
+  createAppointment,
+  getMyAppointments,
 };
