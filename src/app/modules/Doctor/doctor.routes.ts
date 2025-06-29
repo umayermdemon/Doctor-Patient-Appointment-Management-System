@@ -17,6 +17,13 @@ router.patch(
   doctorControllers.updateDoctorService
 );
 
+router.put(
+  "/services/:id/availability",
+  auth("doctor"),
+  // validateRequest(doctorValidationSchema.setAvailabilityValidationSchema),
+  doctorControllers.setAvailability
+);
+
 router.delete("/services/:id", auth("doctor"), doctorControllers.deleteService);
 
 export const doctorRoutes = router;

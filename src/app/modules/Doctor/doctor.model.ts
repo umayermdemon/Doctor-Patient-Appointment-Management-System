@@ -56,6 +56,20 @@ const doctorServiceSchema = new Schema<TDoctorService>({
     type: Number,
     required: true,
   },
+  doctorId: {
+    type: Schema.Types.ObjectId,
+  },
+  availability: [
+    {
+      day: { type: String, required: true },
+      slots: [
+        {
+          start: { type: String, required: true },
+          end: { type: String, required: true },
+        },
+      ],
+    },
+  ],
 });
 
 export const DoctorService = model<TDoctorService>(

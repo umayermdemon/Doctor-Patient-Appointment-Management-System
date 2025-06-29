@@ -33,7 +33,20 @@ const doctorServiceValidationSchema = z.object({
   }),
 });
 
+const setAvailabilityValidationSchema = z.object({
+  body: z.object({
+    day: z.string({ required_error: "Day is required" }).min(3),
+    slots: z.array(
+      z.object({
+        start: z.string({ required_error: "Start is required" }).min(3),
+        end: z.string({ required_error: "End is required" }).min(3),
+      })
+    ),
+  }),
+});
+
 export const doctorValidationSchema = {
   registerDoctorValidationSchema,
   doctorServiceValidationSchema,
+  setAvailabilityValidationSchema,
 };

@@ -4,7 +4,8 @@ import sendResponse from "../../utils/sendResponse";
 import { doctorServices } from "./doctor.service";
 
 const doctorService = catchAsync(async (req, res) => {
-  const result = await doctorServices.doctorService(req.body);
+  const { email } = req.user;
+  const result = await doctorServices.doctorService(req.body, email);
   sendResponse(res, {
     statusCode: status.CREATED,
     success: true,
@@ -24,6 +25,18 @@ const updateDoctorService = catchAsync(async (req, res) => {
   });
 });
 
+const setAvailability = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  const { email } = req.user;
+  const result = await doctorServices.setAvailability(id, req.body, email);
+  sendResponse(res, {
+    statusCode: status.OK,
+    success: true,
+    message: "Availability updated successfully",
+    data: result,
+  });
+});
+
 const deleteService = catchAsync(async (req, res) => {
   const { id } = req.params;
   const result = await doctorServices.deleteService(id);
@@ -39,4 +52,5 @@ export const doctorControllers = {
   doctorService,
   updateDoctorService,
   deleteService,
+  setAvailability,
 };
