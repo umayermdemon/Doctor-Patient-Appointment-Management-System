@@ -36,4 +36,11 @@ router.get(
   doctorControllers.getMyAppointments
 );
 
+// accept or cancel an appointment
+router.patch(
+  "/appointments/:id/status",
+  auth("doctor"),
+  doctorControllers.acceptOrCancelAppointment
+);
+
 export const doctorRoutes = router;

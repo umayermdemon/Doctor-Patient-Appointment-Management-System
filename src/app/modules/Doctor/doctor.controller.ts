@@ -65,10 +65,23 @@ const getMyAppointments = catchAsync(async (req, res) => {
   });
 });
 
+// accept or cancel an appointment
+const acceptOrCancelAppointment = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  const { status } = req.body;
+  const result = await doctorServices.acceptOrCancelAppointment(id, status);
+  sendResponse(res, {
+    statusCode: status.OK,
+    success: true,
+    message: "Appointment status updated successfully",
+    data: result,
+  });
+});
 export const doctorControllers = {
   doctorService,
   updateDoctorService,
   deleteService,
   createAvailability,
   getMyAppointments,
+  acceptOrCancelAppointment,
 };

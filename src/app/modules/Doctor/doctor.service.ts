@@ -73,8 +73,6 @@ const createAvailability = async (
 //  Appointment Management (Doctor Side)
 // View all appointment requests:
 // GET /doctor/appointments?status=pending
-// Accept or cancel an appointment:
-// PATCH /doctor/appointments/:id/status
 // Appointment status:
 // pending, accepted, cancelled, completed
 
@@ -132,10 +130,27 @@ const getMyAppointments = async (email: string, query: any) => {
   return result;
 };
 
+// Accept or cancel an appointment:
+// PATCH /doctor/appointments/:id/status
+
+const acceptOrCancelAppointment = async (id: string, newStatus: string) => {
+  const appointment = await Appointment.findById(id);
+  if (!appointment) {
+    throw new AppError(status.BAD_REQUEST, "Appointment does not exist");
+  }
+  if (appointment.status !== newStatus) {
+    throw new AppError(status.BAD_REQUEST, "Invalid status");
+  }
+  appointment.status = newStatus;
+  await appointment.save();
+  return null;
+};
+
 export const doctorServices = {
   doctorService,
   updateDoctorService,
   deleteService,
   createAvailability,
   getMyAppointments,
+  acceptOrCancelAppointment,
 };
