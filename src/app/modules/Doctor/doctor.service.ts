@@ -2,6 +2,7 @@ import status from "http-status";
 import AppError from "../../errors/AppError";
 import { TAvailabilitySlot, TDoctorService } from "./doctor.interface";
 import { Availability, Doctor, DoctorService } from "./doctor.model";
+import { Appointment } from "../Patient/patient.model";
 // doctor service creation
 const doctorService = async (payload: TDoctorService, email: string) => {
   const doctor = await Doctor.findOne({ email });
@@ -68,9 +69,73 @@ const createAvailability = async (
   });
   return result;
 };
+
+//  Appointment Management (Doctor Side)
+// View all appointment requests:
+// GET /doctor/appointments?status=pending
+// Accept or cancel an appointment:
+// PATCH /doctor/appointments/:id/status
+// Appointment status:
+// pending, accepted, cancelled, completed
+
+// View all appointments:
+const getMyAppointments = async (email: string, query: any) => {
+  const queryFilter = query.status ? { status: query.status } : {};
+  const doctor = await Doctor.findOne({ email });
+  if (!doctor) {
+    throw new AppError(status.BAD_REQUEST, "Doctor does not exist");
+  }
+  const appointments = await Appointment.find({
+    doctorId: doctor._id,
+    ...queryFilter,
+  })
+    .populate<{
+      patientId: {
+        name: string;
+        email: string;
+        phone: string;
+        age: number;
+        gender: "male" | "female" | "other";
+      };
+      serviceId: {
+        title: string;
+        description: string;
+        price: number;
+        duration: string;
+      };
+    }>({
+      path: "patientId",
+      select: "name email phone age gender",
+    })
+    .populate({
+      path: "serviceId",
+      select: "title description price duration",
+    });
+
+  const result = appointments.map((app) => ({
+    status: app.status,
+    selectedDate: app.selectedDate,
+    timeSlot: app.timeSlot,
+    patient: {
+      name: app.patientId.name,
+      email: app.patientId.email,
+      phone: app.patientId.phone,
+      age: app.patientId.age,
+      gender: app.patientId.gender,
+    },
+    service: {
+      title: app.serviceId.title,
+      description: app.serviceId.description,
+      price: app.serviceId.price,
+    },
+  }));
+  return result;
+};
+
 export const doctorServices = {
   doctorService,
   updateDoctorService,
   deleteService,
   createAvailability,
+  getMyAppointments,
 };

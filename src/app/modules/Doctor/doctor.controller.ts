@@ -51,9 +51,24 @@ const createAvailability = catchAsync(async (req, res) => {
   });
 });
 
+// get my appointments
+const getMyAppointments = catchAsync(async (req, res) => {
+  const { email } = req.user;
+  const query = { ...req.query };
+  console.log(query);
+  const result = await doctorServices.getMyAppointments(email, query);
+  sendResponse(res, {
+    statusCode: status.OK,
+    success: true,
+    message: "My appointments retrieved successfully",
+    data: result,
+  });
+});
+
 export const doctorControllers = {
   doctorService,
   updateDoctorService,
   deleteService,
   createAvailability,
+  getMyAppointments,
 };

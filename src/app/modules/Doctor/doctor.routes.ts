@@ -29,4 +29,11 @@ router.post(
   doctorControllers.createAvailability
 );
 
+// get my appointments
+router.get(
+  "/appointments",
+  auth("doctor"),
+  doctorControllers.getMyAppointments
+);
+
 export const doctorRoutes = router;
