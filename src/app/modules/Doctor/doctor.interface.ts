@@ -11,16 +11,21 @@ export type TDoctor = {
   role: "doctor";
 };
 
+export type TDoctorService = {
+  doctorId: Types.ObjectId;
+  title: string;
+  description: string;
+  price: number;
+  duration: number;
+};
+
 export type TAvailabilitySlot = {
   day: string;
   slots: { start: string; end: string }[];
 };
 
-export type TDoctorService = {
-  title: string;
-  description: string;
-  price: number;
-  duration: number;
+export type TAvailability = {
   doctorId: Types.ObjectId;
-  availability?: TAvailabilitySlot[];
+  serviceId: Types.ObjectId;
+  availability: TAvailabilitySlot[];
 };

@@ -3,6 +3,7 @@ import catchAsync from "../../utils/catchAsync";
 import sendResponse from "../../utils/sendResponse";
 import { doctorServices } from "./doctor.service";
 
+// doctor service creation
 const doctorService = catchAsync(async (req, res) => {
   const { email } = req.user;
   const result = await doctorServices.doctorService(req.body, email);
@@ -13,7 +14,7 @@ const doctorService = catchAsync(async (req, res) => {
     data: result,
   });
 });
-
+// doctor service update
 const updateDoctorService = catchAsync(async (req, res) => {
   const { id } = req.params;
   const result = await doctorServices.updateDoctorService(req.body, id);
@@ -25,18 +26,7 @@ const updateDoctorService = catchAsync(async (req, res) => {
   });
 });
 
-const setAvailability = catchAsync(async (req, res) => {
-  const { id } = req.params;
-  const { email } = req.user;
-  const result = await doctorServices.setAvailability(id, req.body, email);
-  sendResponse(res, {
-    statusCode: status.OK,
-    success: true,
-    message: "Availability updated successfully",
-    data: result,
-  });
-});
-
+// doctor service delete
 const deleteService = catchAsync(async (req, res) => {
   const { id } = req.params;
   const result = await doctorServices.deleteService(id);
@@ -48,9 +38,22 @@ const deleteService = catchAsync(async (req, res) => {
   });
 });
 
+// doctor service availability creation
+const createAvailability = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  const { email } = req.user;
+  const result = await doctorServices.createAvailability(id, req.body, email);
+  sendResponse(res, {
+    statusCode: status.OK,
+    success: true,
+    message: "Availability created successfully",
+    data: result,
+  });
+});
+
 export const doctorControllers = {
   doctorService,
   updateDoctorService,
   deleteService,
-  setAvailability,
+  createAvailability,
 };

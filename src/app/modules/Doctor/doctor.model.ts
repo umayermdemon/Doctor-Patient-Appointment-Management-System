@@ -1,6 +1,7 @@
 import { model, Schema } from "mongoose";
-import { TDoctor, TDoctorService } from "./doctor.interface";
+import { TAvailability, TDoctor, TDoctorService } from "./doctor.interface";
 
+// doctor schema
 const doctorSchema = new Schema<TDoctor>({
   name: {
     type: String,
@@ -39,7 +40,12 @@ const doctorSchema = new Schema<TDoctor>({
 
 export const Doctor = model<TDoctor>("Doctor", doctorSchema);
 
+// service schema
 const doctorServiceSchema = new Schema<TDoctorService>({
+  doctorId: {
+    type: Schema.Types.ObjectId,
+    ref: "Doctor",
+  },
   title: {
     type: String,
     required: true,
@@ -56,8 +62,33 @@ const doctorServiceSchema = new Schema<TDoctorService>({
     type: Number,
     required: true,
   },
+  // availability: [
+  //   {
+  //     day: { type: String, required: true },
+  //     slots: [
+  //       {
+  //         start: { type: String, required: true },
+  //         end: { type: String, required: true },
+  //       },
+  //     ],
+  //   },
+  // ],
+});
+
+export const DoctorService = model<TDoctorService>(
+  "DoctorService",
+  doctorServiceSchema
+);
+
+// availability schema
+const availabilitySchema = new Schema<TAvailability>({
   doctorId: {
     type: Schema.Types.ObjectId,
+    ref: "Doctor",
+  },
+  serviceId: {
+    type: Schema.Types.ObjectId,
+    ref: "DoctorService",
   },
   availability: [
     {
@@ -72,7 +103,7 @@ const doctorServiceSchema = new Schema<TDoctorService>({
   ],
 });
 
-export const DoctorService = model<TDoctorService>(
-  "DoctorService",
-  doctorServiceSchema
+export const Availability = model<TAvailability>(
+  "Availability",
+  availabilitySchema
 );
