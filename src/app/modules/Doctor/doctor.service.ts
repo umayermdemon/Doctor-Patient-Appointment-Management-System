@@ -4,15 +4,18 @@ import { TAvailabilitySlot, TDoctorService } from "./doctor.interface";
 import { Availability, Doctor, DoctorService } from "./doctor.model";
 // doctor service creation
 const doctorService = async (payload: TDoctorService, email: string) => {
-  const doctorService = await DoctorService.findOne({ title: payload.title });
-  if (doctorService) {
-    throw new AppError(status.BAD_REQUEST, "Doctor Service already exists");
-  }
   const doctor = await Doctor.findOne({ email });
   if (!doctor) {
     throw new AppError(status.BAD_REQUEST, "Doctor does not exist");
   }
+  const doctorService = await DoctorService.findOne({
+    title: payload.title,
+    doctorId: doctor?._id,
+  });
   payload.doctorId = doctor._id;
+  if (doctorService) {
+    throw new AppError(status.BAD_REQUEST, "Doctor Service already exists");
+  }
   const result = await DoctorService.create(payload);
   return result;
 };
